@@ -1,6 +1,6 @@
 $(document).ready(function () {
   if (estaLogado()) {
-    document.querySelector("#home-sec").innerHTML = "";
+    //document.querySelector("#home-sec").innerHTML = "";
   }
 
   $.getJSON(endpointApi + "/vagas/", function (vagas) {

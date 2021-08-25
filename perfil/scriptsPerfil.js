@@ -18,7 +18,6 @@ $(document).ready(function () {
     var url = new URL(location.href);
     var id = url.searchParams.get("id");
     var tipo = url.searchParams.get("t");
-    console.log(getCookie("id"))
 
     // <span style="font-weight: bold; font-size: 22px;" id="userNome">Lavyk Soares</span><br />
     // <span style="" id="userEmail">lavyk_@hotmail.com</span><br />
@@ -39,30 +38,31 @@ $(document).ready(function () {
                 var endereco = candidato.bairro + ", " + candidato.cidade + " - " + candidato.estado;
                 document.querySelector("#userEndereco").innerHTML = endereco;
 
-                $.getJSON(endpointApi + "/vagas/" + getCookie("idVaga"), function (vagas) {
-                    var html = "";
-                    vagas.forEach(vaga => {
-                        html +=
+                linkFinal = endpointApi + "/vagas/" + getCookie("idVaga");
+                $.ajax({
+                    url: linkFinal,
+                    type: 'GET',
+                    success: function (vagas) {
+                        console.log(vagas)
+                        var html =
                             '<div class="news-link">' +
                             '<h3 class="news-log">' +
-                            vaga.nome +
+                            vagas.nome +
                             "</h3>" +
                             '<p >Jornada: ' +
-                            vaga.jornada +
+                            vagas.jornada +
                             '</p> <p>' +
                             '<p class="description">Número de vagas: ' +
-                            vaga.disponivel +
+                            vagas.disponivel +
                             '</p> <p class="description">' +
-                            vaga.descricao +
-                            '</p><a href="/vaga/?id=' + vaga.id + '" class="btn-view"><span class="ic-sx24"></span>Ver vaga</a>' +
+                            vagas.descricao +
+                            '</p><a href="/vaga/?id=' + vagas.id + '" class="btn-view"><span class="ic-sx24"></span>Ver vaga</a>' +
                             '<span class="time-data"></span></div>';
 
                         document.querySelector("#listVagas").innerHTML = "";
                         document.querySelector("#listVagas").innerHTML = html;
-
-                    });
+                    }
                 });
-
             },
             error: function (a, b, c) {
                 document.querySelector("#userNome").innerHTML = "Não encontrado";

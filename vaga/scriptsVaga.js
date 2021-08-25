@@ -1,4 +1,8 @@
+var url = new URL(location.href);
+var id = url.searchParams.get("id");
+
 $(document).ready(function () {
+
   // if ($('#select').val() == 'empresa') {
   //     $.ajax({
   //         url: endpointApi + '/empresa',
@@ -12,9 +16,6 @@ $(document).ready(function () {
   //         }
   //     });
   // }
-
-  var url = new URL(location.href);
-  var id = url.searchParams.get("id");
 
   // <span style="font-weight: bold; font-size: 22px;" id="userNome">Lavyk Soares</span><br />
   // <span style="" id="userEmail">lavyk_@hotmail.com</span><br />
@@ -46,38 +47,51 @@ $(document).ready(function () {
           document.querySelector("#btnInscreva").innerHTML = html;
         }
 
-        var linkFinal = endpointApi + "/empresas/" + vaga.idEmpresa;
-        $.ajax({
-          url: linkFinal,
-          type: "GET",
-          success: function (empresa) {
-            console.log(empresa);
-            // Se retornar sucesso lista os dados do candidato
-            document.querySelector("#vagaEmpresa").innerHTML = empresa.nome;
-          },
-          error: function (a, b, c) {
-            document.querySelector("#vagaEmpresa").innerHTML = "{Empresa}";
-          },
-        });
+        // var linkFinal = endpointApi + "/empresas/" + vaga.idEmpresa;
+        // $.ajax({
+        //   url: linkFinal,
+        //   type: "GET",
+        //   success: function (empresa) {
+        //     console.log(empresa);
+        //     // Se retornar sucesso lista os dados do candidato
+        //     document.querySelector("#vagaEmpresa").innerHTML = empresa.nome;
+        //   },
+        //   error: function (a, b, c) {
+        //     document.querySelector("#vagaEmpresa").innerHTML = "{Empresa}";
+        //   },
+        // });
 
         linkFinal = endpointApi + "/candidatos/";
+
         $.ajax({
           url: linkFinal,
           type: "GET",
           success: function (candidatos) {
-            candidatos.array.forEach((candidato) => {
-              if (candidato.idVaga == vaga.id) {
-                var html =
+            var html = "";
+            var cont = 0;
+            candidatos.forEach((candidato) => {
+              if (candidato.idVaga == id) {
+                html +=
                   '<a href="../perfil/?id=' +
                   candidato.id +
                   '&t=0">' +
                   candidato.nome +
                   "</a><br/>";
-                document.querySelector("#listCandidatos").innerHTML += html;
+                  cont++;
               }
             });
+
+            if(cont > 0) {
+              document.querySelector("#listCandidatos").innerHTML = "";
+              document.querySelector("#listCandidatos").innerHTML += html;
+            } else {
+              document.querySelector("#listCandidatos").innerHTML += "Nenhum candidato inscrito.";
+            }
+
+
           },
           error: function (a, b, c) {
+            alert("Errado")
             document.querySelector("#listCandidatos").innerHTML =
               "Erro de conexão.";
           },
@@ -97,13 +111,18 @@ $(document).ready(function () {
 
 function realizarCadastro() {
 
-  var linkFinal = endpointApi + "/candidatos/" + getCookie("id") + "/cadastrarVaga/";
-  
+
+  var linkFinal = endpointApi + "/candidatos/" + getCookie("id") + "/cadastrarVaga/" + id;
+  var json = '{"idUser":' + getCookie("id") + ',"idVaga":' + id + '}';
+  var jsonData = JSON.parse(json);
+  console.log(JSON.stringify(jsonData));
+  console.log(linkFinal);
   $.ajax({
     url: linkFinal,
     type: "POST",
-    data: "id=" + getCookie("id") + ";idVaga=" + id,
+    data: JSON.stringify(jsonData),
     success: function (vaga) {
+      setCookie("idVaga", id)
       alert(
         "Você se inscreveu na vaga, aguarde até a empresa entrar em contato."
       );
@@ -113,8 +132,13 @@ function realizarCadastro() {
       alert(
         "Aconteceu algum erro ao realizar sua inscrição, por favor tente novamente mais tarde."
       );
-      // Se retornar erro ele volta para a pagina anterior
-      //window.history.back();
+
+      console.log(a)
+      console.log(b)
+      console.log(c)
+    },
+    headers: {
+      "Content-Type": "application/json; charset=utf-8",
     },
   });
 }

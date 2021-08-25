@@ -53,7 +53,7 @@ $(document).ready(function () {
     }
 
     strBtn +=
-      '<a href="#" onclick="sair()" class="btn-login"><span class="ic-sx22"></span><span>Sair</span></a>';
+      '<a href="#" onclick="sair()" class="btn-login" style="margin-left: 10px"><span class="ic-sx22"></span><span>Sair</span></a>';
 
     document.querySelector("#nomeLogin").innerHTML = strBtn;
   } else {
