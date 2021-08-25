@@ -96,7 +96,10 @@ $(document).ready(function () {
 });
 
 function realizarCadastro() {
-  var linkFinal = $.ajax({
+
+  var linkFinal = endpointApi + "/candidatos/" + getCookie("id") + "/cadastrarVaga/";
+  
+  $.ajax({
     url: linkFinal,
     type: "POST",
     data: "id=" + getCookie("id") + ";idVaga=" + id,
