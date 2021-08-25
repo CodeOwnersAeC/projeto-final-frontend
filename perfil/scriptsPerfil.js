@@ -38,6 +38,31 @@ $(document).ready(function () {
                 document.querySelector("#userTipo").innerHTML = "Candidato";
                 var endereco = candidato.bairro + ", " + candidato.cidade + " - " + candidato.estado;
                 document.querySelector("#userEndereco").innerHTML = endereco;
+
+                $.getJSON(endpointApi + "/vagas/" + getCookie("idVaga"), function (vagas) {
+                    var html = "";
+                    vagas.forEach(vaga => {
+                        html +=
+                            '<div class="news-link">' +
+                            '<h3 class="news-log">' +
+                            vaga.nome +
+                            "</h3>" +
+                            '<p >Jornada: ' +
+                            vaga.jornada +
+                            '</p> <p>' +
+                            '<p class="description">Número de vagas: ' +
+                            vaga.disponivel +
+                            '</p> <p class="description">' +
+                            vaga.descricao +
+                            '</p><a href="/vaga/?id=' + vaga.id + '" class="btn-view"><span class="ic-sx24"></span>Ver vaga</a>' +
+                            '<span class="time-data"></span></div>';
+
+                        document.querySelector("#listVagas").innerHTML = "";
+                        document.querySelector("#listVagas").innerHTML = html;
+
+                    });
+                });
+
             },
             error: function (a, b, c) {
                 document.querySelector("#userNome").innerHTML = "Não encontrado";
@@ -49,6 +74,7 @@ $(document).ready(function () {
             }
         });
     } else if (tipo == "1" && id != null) {
+        // Empresa que estiver vendo outra empresa
         var linkFinal = endpointApi + '/empresas/' + id;
         $.ajax({
             url: linkFinal,
@@ -60,6 +86,31 @@ $(document).ready(function () {
                 document.querySelector("#userTipo").innerHTML = "Empresa";
                 var endereco = empresa.bairro + ", " + empresa.cidade + " - " + empresa.estado;
                 document.querySelector("#userEndereco").innerHTML = endereco;
+
+                $.getJSON(endpointApi + "/vagas/", function (vagas) {
+                    vagas.forEach(vaga => {
+                        if (vaga.idEmpresa == id) {
+                            //console.log(vaga.id);
+
+                            var html =
+                                '<div class="news-link">' +
+                                '<img class="poster" src="/img/post.png" />' +
+                                '<span class="hot-news">' + vaga.disponivel + ' vagas</span>' +
+                                '<h3 class="news-log">' +
+                                vaga.nome +
+                                "</h3>" +
+                                '<p class="description">Jornada: ' +
+                                vaga.jornada +
+                                '</p> <p class="description">' +
+                                vaga.descricao +
+                                '</p><a href="/vaga/?id=' + vaga.id + '" class="btn-view"><span class="ic-sx24"></span>Ver vaga</a>' +
+                                '<span class="time-data"></span></div>';
+                            document.querySelector("#listVagas").innerHTML += html;
+                        }
+
+                    });
+                });
+
             },
             error: function (a, b, c) {
                 document.querySelector("#userNome").innerHTML = "Não encontrado";
@@ -73,19 +124,38 @@ $(document).ready(function () {
     } else {
         if (estaLogado()) {
             document.querySelector("#userNome").innerHTML = getCookie("nome");
-            document.querySelector("#user;  Email").innerHTML = getCookie("email");
+            document.querySelector("#userEmail").innerHTML = getCookie("email");
             document.querySelector("#userTipo").innerHTML = getCookie("tipo");
             var endereco = getCookie("bairro") + ", " + getCookie("cidade") + " - " + getCookie("estado");
             document.querySelector("#userEndereco").innerHTML = endereco;
 
-            if (getCookie("tipo") == "empresa") {
-                // Ajax GET Vagas pelo idEmpresa
-                document.querySelector("#listVagas") = "asdad";
-
-            } else if (getCookie("tipo") == "candidato") {
-                // Ajax GET Vagas pelo idVaga
-                document.querySelector("#listVagas") = "asdad";
-            }
+            $.getJSON(endpointApi + "/vagas/", function (vagas) {
+                var html = "";
+                var cont = 0;
+                vagas.forEach(vaga => {
+                    if (vaga.idEmpresa == getCookie("id")) {
+                        html +=
+                            '<div class="news-link">' +
+                            '<h3 class="news-log">' +
+                            vaga.nome +
+                            "</h3>" +
+                            '<p >Jornada: ' +
+                            vaga.jornada +
+                            '</p> <p>' +
+                            '<p class="description">Número de vagas: ' +
+                            vaga.disponivel +
+                            '</p> <p class="description">' +
+                            vaga.descricao +
+                            '</p><a href="/vaga/?id=' + vaga.id + '" class="btn-view"><span class="ic-sx24"></span>Ver vaga</a>' +
+                            '<span class="time-data"></span></div>';
+                        cont++;
+                    }
+                    if (cont > 0) {
+                        document.querySelector("#listVagas").innerHTML = "";
+                        document.querySelector("#listVagas").innerHTML = html;
+                    }
+                });
+            });
 
 
         } else {

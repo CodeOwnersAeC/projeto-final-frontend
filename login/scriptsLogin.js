@@ -33,7 +33,11 @@ $(document).ready(function () {
                 setCookie("tipo", "candidato", 30);
                 setCookie("id", candidato.id, 30);
                 setCookie("nome", candidato.nome, 30);
-                setCookie("email", candidato.email, 30);
+
+                setCookie("bairro", candidato.bairro, 30);
+                setCookie("cidade", candidato.cidade, 30);
+                setCookie("estado", candidato.estado, 30);
+
                 setCookie("idVaga", candidato.idVaga, 30);
                 window.location.href = "../";
             },
@@ -50,6 +54,11 @@ $(document).ready(function () {
                         setCookie("id", empresa.id, 30);
                         setCookie("nome", empresa.nome, 30);
                         setCookie("email", empresa.email, 30);
+
+                        setCookie("bairro", empresa.bairro, 30);
+                        setCookie("cidade", empresa.cidade, 30);
+                        setCookie("estado", empresa.estado, 30);
+
                         window.location.href = "../";
                         //window.location.replace("../");
                     },

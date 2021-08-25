@@ -9,7 +9,7 @@ html { visibility:hidden; }
     padding: 20px;
 }
 
-input, select, option {
+input, select, option, textarea {
     width: 100%;
     margin: 5px;
     padding: 5px;

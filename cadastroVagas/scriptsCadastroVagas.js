@@ -1,6 +1,7 @@
 $(document).ready(function () {
   if (getCookie("tipo") == "empresa" && estaLogado()) {
     document.getElementsByTagName("html")[0].style.visibility = "visible";
+    document.querySelector("#idEmpresa").value = getCookie("id");
   } else {
     window.location.href = "../";
   }
@@ -20,6 +21,7 @@ $(document).ready(function () {
     //console.log($('form').serialize());
     var $form = $("form");
     var dataJson = getFormData($form);
+    console.log(dataJson);
     $.ajax({
       url: endpointApi + "/vagas/",
       type: "PUT",
