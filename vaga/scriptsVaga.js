@@ -34,7 +34,7 @@ $(document).ready(function () {
           "Jornada: " + vaga.jornada + "h";
         document.querySelector("#vagaVagasDisponiveis").innerHTML =
           "Vagas disponiveis: " + vaga.disponivel;
-          console.log(vaga)
+        console.log(vaga);
         if (getCookie("tipo") == "candidato") {
           var html;
           if (getCookie("idVaga") != id && getCookie("idVaga") == 0) {
@@ -96,7 +96,24 @@ $(document).ready(function () {
 });
 
 function realizarCadastro() {
-  alert("Inscrição realizada com sucesso.")
+  var linkFinal = $.ajax({
+    url: linkFinal,
+    type: "POST",
+    data: "id=" + getCookie("id") + ";idVaga=" + id,
+    success: function (vaga) {
+      alert(
+        "Você se inscreveu na vaga, aguarde até a empresa entrar em contato."
+      );
+      window.location.href = "../vaga/?id=" + id;
+    },
+    error: function (a, b, c) {
+      alert(
+        "Aconteceu algum erro ao realizar sua inscrição, por favor tente novamente mais tarde."
+      );
+      // Se retornar erro ele volta para a pagina anterior
+      //window.history.back();
+    },
+  });
 }
 
 // //Consulta o webservice viacep.com.br/

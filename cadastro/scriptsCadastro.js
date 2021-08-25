@@ -1,5 +1,4 @@
 $(document).ready(function () {
-    
   if (!estaLogado()) {
     document.getElementsByTagName("html")[0].style.visibility = "visible";
   } else {
@@ -45,7 +44,14 @@ $(document).ready(function () {
         type: "PUT",
         data: JSON.stringify(dataJson),
         success: function (result) {
-          console.log("Cadastrado com sucesso.");
+
+          let curriculo = document.getElementById("image-file").files[0];
+          let formData = new FormData();
+
+          formData.append("curriculo", curriculo);
+          fetch("candidatos/" + getCookie("id") + "/upload/curriculo", { method: "POST", body: formData });
+
+          alert("Cadastrado com sucesso.");
           window.location.href = "../";
         },
         error: function (request, status, error) {
@@ -86,7 +92,7 @@ $(document).ready(function () {
       //$('*[id*=Profissional]').prop("required", true);
 
       html =
-        '<div id="formProfissional"> <div><input id="nome" name="nome" placeholder="Nome" type="text" required="required"></div> <div><input id="cpf" name="cpf" placeholder="CPF" type="text" required="required" onkeydown="javascript: fMasc( this, mCPF );" maxlength="14"></div> <div><input id="cep" name="cep" placeholder="CEP" type="text" value="" size="10" maxlength="9" required="required" onkeydown="javascript: fMasc( this, mCEP );" maxlength="9"></div> <div><input id="rua" name="rua" placeholder="Rua" type="text" size="60" required="required"></div> <div><input id="numero" name="numero" placeholder="Número" type="text" required="required"></div> <div><input id="bairro" name="bairro" placeholder="Bairro" type="text" size="40" required="required"> </div> <div><input id="cidade" name="cidade" placeholder="Cidade" type="text" size="40" required="required"> </div> <div><input id="estado" name="estado" placeholder="Estado" type="text" size="2" required="required"></div> <div><input id="telefone" name="telefone" placeholder="Telefone: (DDD) + Número" type="text" required="required" onkeydown="javascript: fMasc( this, mTelefone );" maxlength="17"> </div> <div> <select id="formacao" name="formacao" required="required"> <option value="null">Selecione sua profissão</option> <option value="estudante">Estudante</option> <option value="programador">Programador</option> <option value="atendente">Atendente</option> <option value="outro">Outro</option> </select> </div></div>';
+        '<div id="formProfissional"> <div><input id="nome" name="nome" placeholder="Nome" type="text" required="required"></div> <div><input id="cpf" name="cpf" placeholder="CPF" type="text" required="required" onkeydown="javascript: fMasc( this, mCPF );" maxlength="14"></div> <div><input id="cep" name="cep" placeholder="CEP" type="text" value="" size="10" maxlength="9" required="required" onkeydown="javascript: fMasc( this, mCEP );" maxlength="9"></div> <div><input id="rua" name="rua" placeholder="Rua" type="text" size="60" required="required"></div> <div><input id="numero" name="numero" placeholder="Número" type="text" required="required"></div> <div><input id="bairro" name="bairro" placeholder="Bairro" type="text" size="40" required="required"> </div> <div><input id="cidade" name="cidade" placeholder="Cidade" type="text" size="40" required="required"> </div> <div><input id="estado" name="estado" placeholder="Estado" type="text" size="2" required="required"></div> <div><input id="telefone" name="telefone" placeholder="Telefone: (DDD) + Número" type="text" required="required" onkeydown="javascript: fMasc( this, mTelefone );" maxlength="17"> </div> <div> <select id="formacao" name="formacao" required="required"> <option value="null">Selecione sua profissão</option> <option value="estudante">Estudante</option> <option value="programador">Programador</option> <option value="atendente">Atendente</option> <option value="outro">Outro</option> </select> </div> <br/><div>Selecione seu curriculo: <input type="file" id="curriculo" name="curriculo" accept="application/pdf"> </div></div>';
     } else {
       $("#formProfissional").hide(100);
       $("#formEmpresa").hide(100);
