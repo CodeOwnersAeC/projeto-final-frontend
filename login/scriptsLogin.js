@@ -15,9 +15,11 @@ $(document).ready(function () {
     //     });
     // }
 
-    if(estaLogado()) {
+    if (!estaLogado()) {
+        document.getElementsByTagName("html")[0].style.visibility = "visible";
+      } else {
         window.location.href = "../";
-    }
+      }
 
     $('#btnLogin').click(function () {
         var email = $('#email').val();

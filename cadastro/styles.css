@@ -1,3 +1,5 @@
+html { visibility:hidden; }
+
 .formLogin {
     margin: auto;
     margin-top: 20px;

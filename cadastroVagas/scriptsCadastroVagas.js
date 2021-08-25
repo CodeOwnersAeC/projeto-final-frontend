@@ -1,37 +1,40 @@
-var endpointApi = 'https://localhost:5001';
-
 $(document).ready(function () {
+  if (getCookie("tipo") == "empresa" && estaLogado()) {
+    document.getElementsByTagName("html")[0].style.visibility = "visible";
+  } else {
+    window.location.href = "../";
+  }
 
-    function getFormData($form) {
-        var unindexed_array = $form.serializeArray();
-        var indexed_array = {};
+  function getFormData($form) {
+    var unindexed_array = $form.serializeArray();
+    var indexed_array = {};
 
-        $.map(unindexed_array, function (n, i) {
-            indexed_array[n['name']] = n['value'];
-        });
+    $.map(unindexed_array, function (n, i) {
+      indexed_array[n["name"]] = n["value"];
+    });
 
-        return indexed_array;
-    }
+    return indexed_array;
+  }
 
-    $('#btnRegister').click(function () {
-        //console.log($('form').serialize());
-        var $form = $("form");
-        var dataJson = getFormData($form);
-        $.ajax({
-            url: endpointApi + '/vagas/',
-            type: 'PUT',
-            data: JSON.stringify(dataJson),
-            success: function (result) {
-                console.log("Cadastrado com sucesso.");
-                window.location.href = "../";
-            },
-            error: function (request, status, error) {
-                console.log(request.responseText);
-            },
-            headers: {
-                'Content-Type': 'application/json; charset=utf-8'
-            }
-        });
-
-    })
+  $("#btnRegister").click(function () {
+    //console.log($('form').serialize());
+    var $form = $("form");
+    var dataJson = getFormData($form);
+    $.ajax({
+      url: endpointApi + "/vagas/",
+      type: "PUT",
+      data: JSON.stringify(dataJson),
+      success: function (result) {
+        alert("Sua vaga foi cadastrada com sucesso.");
+        window.location.href = "../perfil/";
+      },
+      error: function (request, status, error) {
+        alert("Aconteceu algum erro, tente novamente mais tarde.");
+        console.log(request.responseText);
+      },
+      headers: {
+        "Content-Type": "application/json; charset=utf-8",
+      },
+    });
+  });
 });

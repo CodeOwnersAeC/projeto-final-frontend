@@ -1,8 +1,14 @@
 $(document).ready(function () {
     if (estaLogado()) {
-        document.querySelector("#nomeLogin").innerHTML = '<a href="/perfil/" class="btn-startgames"><span class="ic-sx21"></span><span id="nomeLogin">' + getCookie('nome') + '</span></a>';
+        var strBtn = '<a href="/perfil/" class="btn-startgames"><span class="ic-sx21"></span><span id="nomeLogin">' + getCookie('nome') + '</span></a>';
+        if(getCookie('tipo') == 'empresa') {
+            strBtn += '<a href="/cadastroVagas/" class="btn-startgames"><span class="ic-sx21"></span><span id="nomeLogin">Criar Vaga</span></a>';
+        }
+
+        document.querySelector("#nomeLogin").innerHTML = strBtn;
+
     } else {
-        document.querySelector("#nomeLogin").innerHTML = '<a href="../login/" class="btn-startgames"><span class="ic-sx21"></span><span id="nomeLogin">Login</span></a>';;
+        document.querySelector("#nomeLogin").innerHTML = '<a href="../login/" class="btn-startgames"><span class="ic-sx21"></span><span id="nomeLogin">Login</span></a>';
     }
 
 
@@ -10,26 +16,25 @@ $(document).ready(function () {
         vagas.forEach(vaga => {
             console.log(vaga);
             var nomeEmpresa;
-            // $.getJSON(endpointApi + "/empresas/" + vaga.idEmpresa, function (empresa) {
-                
-            //     nomeEmpresa = empresa.nome;
-            //     var html = '<div class="news-link">' +
-            //         '<img class="poster" src="/img/post.png" />' +
-            //         '<h3 class="news-log">' + vaga.nome + '</h3>' +
-            //         '<p class="description">' +
-            //         vaga.descricao +
-            //         '</p><a href="#" class="btn-view"><span class="ic-sx24"></span>Inscreva-se</a>' +
-            //         '<span class="time-data">' + nomeEmpresa + '</span></div>';
-            //     document.querySelector("#listVagas").innerHTML += html;
-            // });
-            var html = '<div class="news-link">' +
-            '<img class="poster" src="/img/post.png" />' +
-            '<h3 class="news-log">' + vaga.nome + '</h3>' +
-            '<p class="description">' +
-            vaga.descricao +
-            '</p><a href="#" class="btn-view"><span class="ic-sx24"></span>Inscreva-se</a>' +
-            '<span class="time-data">{Nome da empresa}</span></div>';
-        document.querySelector("#listVagas").innerHTML += html;
+            $.getJSON(
+              endpointApi + "/empresas/" + vaga.idEmpresa,
+              function (empresa) {
+                nomeEmpresa = empresa.nome;
+                var html =
+                  '<div class="news-link">' +
+                  '<img class="poster" src="/img/post.png" />' +
+                  '<h3 class="news-log">' +
+                  vaga.nome +
+                  "</h3>" +
+                  '<p class="description">' +
+                  vaga.descricao +
+                  '</p><a href="/vaga/?id="'+ vaga.id + 'class="btn-view"><span class="ic-sx24"></span>Inscreva-se</a>' +
+                  '<span class="time-data">' +
+                  nomeEmpresa +
+                  "</span></div>";
+                document.querySelector("#listVagas").innerHTML += html;
+              }
+            );
 
         });
     });
