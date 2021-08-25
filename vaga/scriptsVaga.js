@@ -13,10 +13,6 @@ $(document).ready(function () {
   //     });
   // }
 
-  function realizarCadastro() {
-    alert("Inscrição realizada com sucesso.")
-  }
-
   var url = new URL(location.href);
   var id = url.searchParams.get("id");
 
@@ -37,11 +33,11 @@ $(document).ready(function () {
         document.querySelector("#vagaJornada").innerHTML =
           "Jornada: " + vaga.jornada + "h";
         document.querySelector("#vagaVagasDisponiveis").innerHTML =
-          "Vagas disponiveis: " + vagas.disponivel;
-
+          "Vagas disponiveis: " + vaga.disponivel;
+          console.log(vaga)
         if (getCookie("tipo") == "candidato") {
           var html;
-          if (getCookie("idVaga") != id && getCookie("idVaga") == '0') {
+          if (getCookie("idVaga") != id && getCookie("idVaga") == 0) {
             html = '<a href="#" onclick="realizarCadastro()">Inscreva-se</a>';
           } else {
             html = "Você está inscrito nessa vaga.</a>";
@@ -55,6 +51,7 @@ $(document).ready(function () {
           url: linkFinal,
           type: "GET",
           success: function (empresa) {
+            console.log(empresa);
             // Se retornar sucesso lista os dados do candidato
             document.querySelector("#vagaEmpresa").innerHTML = empresa.nome;
           },
@@ -87,6 +84,7 @@ $(document).ready(function () {
         });
       },
       error: function (a, b, c) {
+        alert(vaga);
         document.querySelector("#vagaNome").innerHTML = "Vaga não encontrada.";
         // Se retornar erro ele volta para a pagina anterior
         //window.history.back();
@@ -96,6 +94,10 @@ $(document).ready(function () {
     window.location.href = "../";
   }
 });
+
+function realizarCadastro() {
+  alert("Inscrição realizada com sucesso.")
+}
 
 // //Consulta o webservice viacep.com.br/
 // $.getJSON("https://viacep.com.br/ws/" + cep + "/json/?callback=?", function (dados) {

@@ -14,27 +14,43 @@ $(document).ready(function () {
 
     $.getJSON(endpointApi + "/vagas/", function (vagas) {
         vagas.forEach(vaga => {
-            console.log(vaga);
-            var nomeEmpresa;
-            $.getJSON(
-              endpointApi + "/empresas/" + vaga.idEmpresa,
-              function (empresa) {
-                nomeEmpresa = empresa.nome;
-                var html =
-                  '<div class="news-link">' +
-                  '<img class="poster" src="/img/post.png" />' +
-                  '<h3 class="news-log">' +
-                  vaga.nome +
-                  "</h3>" +
-                  '<p class="description">' +
-                  vaga.descricao +
-                  '</p><a href="/vaga/?id="'+ vaga.id + 'class="btn-view"><span class="ic-sx24"></span>Inscreva-se</a>' +
-                  '<span class="time-data">' +
-                  nomeEmpresa +
-                  "</span></div>";
-                document.querySelector("#listVagas").innerHTML += html;
-              }
-            );
+            //console.log(vaga.id);
+
+            var html =
+            '<div class="news-link">' +
+            '<img class="poster" src="/img/post.png" />' +
+            '<span class="hot-news">' + vaga.disponivel + ' vagas</span>' +
+            '<h3 class="news-log">' +
+            vaga.nome +
+            "</h3>" +
+            '<p class="description">Jornada: ' +
+            vaga.jornada +
+            '</p> <p class="description">' +
+            vaga.descricao +
+            '</p><a href="/vaga/?id='+ vaga.id + '" class="btn-view"><span class="ic-sx24"></span>Ver vaga</a>' +
+            '<span class="time-data"></span></div>';
+          document.querySelector("#listVagas").innerHTML += html;
+
+            // var nomeEmpresa;
+            // await $.getJSON(
+            //   endpointApi + "/empresas/" + vaga.idEmpresa,
+            //   function (empresa) {
+            //     nomeEmpresa = empresa.nome;
+            //     var html =
+            //       '<div class="news-link">' +
+            //       '<img class="poster" src="/img/post.png" />' +
+            //       '<h3 class="news-log">' +
+            //       vaga.nome +
+            //       "</h3>" +
+            //       '<p class="description">' +
+            //       vaga.descricao +
+            //       '</p><a href="/vaga/?id="'+ vaga.id + 'class="btn-view"><span class="ic-sx24"></span>Inscreva-se</a>' +
+            //       '<span class="time-data">' +
+            //       nomeEmpresa +
+            //       "</span></div>";
+            //     document.querySelector("#listVagas").innerHTML += html;
+            //   }
+            // );
 
         });
     });
